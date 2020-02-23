@@ -22,7 +22,11 @@ namespace WebApplication1
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                DeveloperExceptionPageOptions developerExceptionPageOptions = new DeveloperExceptionPageOptions()
+                {
+                    SourceCodeLineCount = 1
+                };
+                app.UseDeveloperExceptionPage(developerExceptionPageOptions);
             }
 
 
@@ -31,11 +35,12 @@ namespace WebApplication1
             fileServerOptions.DefaultFilesOptions.DefaultFileNames.Add("foo.html");
 
 
-            app.UseFileServer(fileServerOptions);
+            app.UseFileServer();
             
 
             app.Run(async (context) =>
             {
+                throw new Exception("Some error");
                 await context.Response.WriteAsync("Hello World!");
             });
         }
